@@ -1,0 +1,50 @@
+openapi: "3.0.1"
+info:
+  title: Codenames
+  version: 0.0.0
+components:
+  schemas:
+    Codename:
+      description: Card in the game
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - "redAgent"
+            - "blueAgent"
+            - "bystander"
+            - "assassin"
+        isRevealed:
+          type: boolean
+          default: false
+        position:
+          type: int32
+    Field:
+      description: Collection of all 25 codenames
+      type: array
+      items:
+        $ref: "#/components/schemas/Codename"
+    Player:
+      description: Player in the game
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - "spymaster"
+            - "teammate"
+        team:
+          type: string
+          enum:
+            - "red"
+            - "blue"
+    Game:
+      description: Meta-information about the current game
+      type: object
+      properties:
+        whoseTurn:
+          type: string
+          enum:
+            - "red"
+            - "blue"
