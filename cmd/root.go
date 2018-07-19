@@ -11,11 +11,11 @@ var rootCmd = &cobra.Command{
 	Use:   "codenames",
 	Short: "Codenames is a game",
 	Run: func(cmd *cobra.Command, arg []string) {
-		fmt.Println("yo")
+		fmt.Println("Welcome to Codenames")
 	},
 }
 
-// Execute cobra command
+// Execute runs the root cobra command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
