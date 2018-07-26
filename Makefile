@@ -4,7 +4,10 @@ BINARY=codenames
 
 .DEFAULT_GOAL := all
 
-all: build
+success:
+	@echo "Codenames built successfully!"
+
+all: build success
 
 build: ${BINARY}
 
