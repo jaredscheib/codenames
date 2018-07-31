@@ -19,26 +19,50 @@ components:
           type: boolean
           default: false
         position:
-          type: int32
+          type: int8
+        value:
+          type: string
     Field:
       description: Collection of all 25 codenames
       type: array
+      minItems: 25
+      maxItems: 25
+      uniqueItems: true
       items:
         $ref: "#/components/schemas/Codename"
     Player:
       description: Player in the game
       type: object
       properties:
-        type:
+        id: 
           type: string
-          enum:
-            - "spymaster"
-            - "teammate"
-        team:
+    Team: 
+      description: Collection of players
+      type: object
+      properties: 
+        color: 
           type: string
-          enum:
             - "red"
             - "blue"
+        spymaster: 
+          $ref: "#/components/schemas/Player"
+        teammates:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Player"
+    Clue:
+      description: clue 
+      type: object
+      properties:
+        word: 
+          type: string
+        number:
+          type: string
+    Clues: 
+      description: all clues submitted in game
+      type: array
+      items:
+        $ref: "#/components/schemas/Clue"
     Game:
       description: Meta-information about the current game
       type: object
@@ -48,3 +72,55 @@ components:
           enum:
             - "red"
             - "blue"
+        teams: 
+          type: object
+          properties:
+            red:
+              type: object
+              $ref: "#/components/schemas/Team"
+            blue:
+              type: object
+              $ref: "#/components/schemas/Team"
+        field:
+          $ref: "#/components/schemas/Field"
+x-commands:
+  start:
+    summary: Start a new game
+    description: Checks for game in progress, if so then prompts for destroy to start again. Otherwise, creates a new game. Reports whose turn it is.
+    responses:
+      default:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Game"
+  clue <word> <count>:
+    summary: Set your turn's clue.
+    description: Set the current clue for the current team's turn
+    paramaters: 
+      word: 
+        description: the one word clue for the current team's turn
+        type: string
+      number: 
+        description: how many codenames the clue word is related to; also team guesses - 1; can be a number 0 - 8, or infinity
+        type: string
+  clues:
+    summary: List history of all clues for both teams, including current one.
+    response:
+      default:
+        content: 
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/Clues"   
+  guess <position>:
+    summary: Validity. Remaining guesses on turn.
+    description: submission of a position
+    parameters: 
+      position: 
+        summary: number corresponding to a codename position
+        type: int8
+        min: 1
+        max: 25
+  next:
+    summary: Ends your turn early.
+  end:
+    summary: Deletes current game.
