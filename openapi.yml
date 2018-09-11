@@ -15,9 +15,12 @@ components:
             - "blueAgent"
             - "bystander"
             - "assassin"
-        isRevealed:
-          type: boolean
-          default: false
+        visibility:
+          type: string
+          enum: 
+            - "visible"
+            - "hidden"
+          default: "hidden"
         position:
           type: int8
         value:

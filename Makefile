@@ -18,4 +18,4 @@ all: build success
 build: ${BINARY}
 
 ${BINARY}: $(SOURCES)
-	go build -o ./bin/${BINARY} ${LDFLAGS} ./main.go
+	go build -o ./bin/${BINARY} ${LDFLAGS} ./cmd/*.go
