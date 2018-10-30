@@ -27,24 +27,61 @@ func generateInitialField() []codenames.Codename {
 	var cn []codenames.Codename
 	chosen := make(map[string]bool)
 	l := getCodenamesList()
+	tl := getTypesList()
 
-	for len(chosen) < 25 {
-		n := rand.Intn(400)
+	for len(chosen) < len(tl) {
+		n := rand.Intn(len(l))
 		_, ok := chosen[l[n]]
 		if !ok {
 			chosen[l[n]] = true
 		}
 	}
 
+	for i := range tl {
+		j := rand.Intn(i + 1)
+		tl[i], tl[j] = tl[j], tl[i]
+	}
+
+	i := 0
 	for key := range chosen {
 		cn = append(cn, codenames.Codename{
-			Type:       "bystander",
+			Type:       tl[i],
 			Value:      key,
 			Visibility: "hidden",
 		})
+		i = i + 1
 	}
 
 	return cn
+}
+
+// since this is hardcoded, red will always start
+func getTypesList() []string {
+	return []string{"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"bystander",
+		"blueAgent",
+		"blueAgent",
+		"blueAgent",
+		"blueAgent",
+		"blueAgent",
+		"blueAgent",
+		"blueAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"redAgent",
+		"assassin"}
 }
 
 func getCodenamesList() []string {
